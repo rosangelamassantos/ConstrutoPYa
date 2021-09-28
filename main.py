@@ -1,65 +1,130 @@
-def print_oi(name):
-    print(f'Oi, {name}!')  # a aprtir do Python 3
-    print('Oi, ' + name + "!")  # antes do Python 3
+# 1 - imports - bibliotecas
+import pytest
+# 2 - class - classe
+
+# 3 - definitions - definições = métodos e funções
+def print_hi(name):
+    print(f'Oi, {name}')
 
 
-def calcular_area_do_retangulo(largura, comprimento):
-    return largura * comprimento
+def somar(numero1, numero2):
+    return numero1 + numero2
 
+def subtrair(numero1, numero2):
+    return numero1 / numero2 # bug!!
 
-def calcular_area_do_quadrado(lado):
-    return lado ** 2
+def multiplicar(numero1, numero2):
+    return numero1 * numero2
 
+# esse é um exemplo de demonstração
+def dividir(numero1, numero2):
+    if numero2 != 0:
+        return numero1 / numero2
+    else:
+        return 'Não dividirás por zero'
 
-def calcular_area_do_triangulo(largura, comprimento):
-    return largura * comprimento / 2
-
-
-def contagem_progressiva(fim):
-    for num in range(fim):  # repetir o bloco de 0 ate o fim
-        print(num)  # exibir o num
-
-def apoiar_candidato(nome,vezes):
-    for num in range(vezes):
-        # cont = num + 1            -----> essas duas linhas foram substituidas pela linha 30
-        # print(f'{cont} - {nome}')
-
-        if num < 9:
-            print(f'00{num}','-', nome) # ou print(f'0{num+1} - {nome}') para até 10
-        elif num < 99:
-            print(f'0{num + 1} - {nome}')
+def dividir_try_except(numero1, numero2):
+    try:
+        return numero1 / numero2
+    except TypeError:
+        #return 'Não dividirás por zero'
+        if TypeError == ZeroDivisionError:
+            return 'Não dividirás por zero'
+        elif TypeError == ArithmeticError:
+            return 'Erro no cálculo'
+        elif TypeError == ValueError:
+            return 'Erro no valor'
         else:
-            print(num + 1, '-', nome)
+            return 'Erro desconhecido'
+        pass
 
-def brincar_de_plim(fim):
-    for num in range(fim):
-        if num % 4 == 0:
-            print('Plim!')
-        else:
-            print('{:0>9}'.format(num))
+# Testes Unitarios / Teste de Unidades
+
+ # teste da função de somar
+def test_somar_didatico():
+    # 1 - Configura / Prepara
+    numero1 = 8 # input / entrada
+    numero2 = 5 # input / entrada
+    resultado_esperado = 13 # output / saida
+    # 2 - Executa
+    resultado_atual = somar(numero1,numero2)
+    # 3 - Check / Valida
+    assert resultado_atual == resultado_esperado
+
+@pytest.mark.parametrize('numero1,numero2,resultado',[
+    #valores
+    (5, 4, 9), # teste 1
+    (3, 2, 5), # teste 2
+    (10,6, 16), # teste 3
+])
+def test_somar(numero1, numero2, resultado):
+    try:
+        assert somar(numero1,numero2) == resultado
+    except AssertionError:
+        print(f'Entrou no Except: {AssertionError}')
+        pass
+
+def test_somar_resultado_negativo():
+    assert somar(-1000,-2000) == -3000
+
+def test_subtrair():
+    assert subtrair(4,5) == -1
+
+def test_multiplicar():
+    assert multiplicar(3,7) == 21
+
+def test_dividir():
+    assert dividir(8,4) == 2
+
+def test_dividir_por_zero():
+    assert dividir(8,0) == 'Não dividirás por zero'
 
 
-# Estrutura de identificacao / execução do script
-if _name_ == '_main_':
-    print_oi('Bea')
 
-# Chamar a fucao de calculo da area do retangulo
-resultado = calcular_area_do_retangulo(5, 3)
-print(f'A área do retângulo é de {resultado} m²')
+@pytest.mark.parametrize('numero1, numero2, resultado',[
+    (8,2,4),
+    (20,4,5),
+    (10,0,'Não dividirás por zero')
+])
+def test_dividir_try_except(numero1,numero2,resultado):
+    assert dividir_try_except(numero1,numero2) == resultado
 
-# Chamar a fucao de calculo da area do quadrado
-resultado = calcular_area_do_quadrado(9)
-print(f'A área do quadrado é de {resultado} m²')
 
-# Chamar a fucao de calculo da area do triangulo
-resultado = calcular_area_do_triangulo(8, 4)
-print(f'A área do triângulo é de {resultado} m²')
 
-# Executar uma contagem progessiva
-contagem_progressiva(11)
 
-# Exibir o nome do candidato x vezes
-apoiar_candidato('Faker', 100)
 
-# Brincar de PLIM
-brincar_de_plim(100)
+
+    # teste positivo --> mostrar o resultado correto
+    #                --> avançar para a próxima etapa
+
+    # teste negativo --> mostrar a mensagem de erro
+
+# Dia 1 : 100 testes : 0 passaram
+# Dia 2 : 100 testes : 5 passaram
+# Dia 3 : 100 testes : 15 passaram
+# Dia 4 : 100 testes : 30 passaram
+
+#TDD : Desenvolvimento Direcionado pelo Testes
+# - Criar o esqueleto de classes, funções e métodos logo no início da Sprint
+# - Criar pelo 1 teste (feliz) para todas as funções e métodos
+# - Executar todos os testes unitários diariamente para medir o progresso
+
+
+if __name__ == '__main__':
+    print_hi('Jose')
+
+    # soma de 2 números
+    resultado = somar(4,2)
+    print(f'O resultado da soma: {resultado}')
+
+    # subtração de 2 números
+    resultado = subtrair(5,3)
+    print(f'O resultado da subtração: {resultado}')
+
+    # multiplicação
+    resultado = multiplicar(2,4)
+    print(f'O resultado da multiplicação: {resultado}')
+
+    # divisão
+    resultado = dividir(9,8)
+    print(f'O resultado da divisão: {resultado}')
